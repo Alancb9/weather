@@ -3,14 +3,14 @@ import { weather_data } from './data.js';
 
 let loadDayForecastData = () => {
 
-    let [datosCiudad,...otrasCiudades] = weather_data;
+    let [datosCiudad, ...otrasCiudades] = weather_data;
 
-    let {city: ciudad, date: fecha, maxtemperature: maxtemp, mintemperature: mintemp, cloudiness: nubosidad, wind: viento, rainfall: probPrecipitacion, forecast_today: pronosticoHoy} = datosCiudad;
+    let { city: ciudad, date: fecha, maxtemperature: maxtemp, mintemperature: mintemp, cloudiness: nubosidad, wind: viento, rainfall: probPrecipitacion, forecast_today: pronosticoHoy } = datosCiudad;
 
     let [tarde, noche] = pronosticoHoy;
 
-    let {text: textoTarde, temperature: tempTarde, forecast: msmTarde, icon: iconoTarde} = tarde;
-    let {text: textoNoche, temperature: tempNoche, forecast: msmNoche, icon: iconoNoche} = noche;
+    let { text: textoTarde, temperature: tempTarde, forecast: msmTarde, icon: iconoTarde } = tarde;
+    let { text: textoNoche, temperature: tempNoche, forecast: msmNoche, icon: iconoNoche } = noche;
 
     let mensaje_ciudad = `<h5 id="city" class="text-golden">${ciudad}</h5>`;
     let mensaje_fecha = `<h5 id="date" class="text-golden text-sm  opacity-8 mb-0">${fecha}</h5>`;
@@ -43,7 +43,7 @@ let loadDayForecastData = () => {
     let elemento_tempNoche = document.getElementById("night_temperature");
     let elemento_pronosticoNoche = document.getElementById("night_forecast");
     let elemento_periodoNoche = document.getElementById("night_text");
-
+    
     elemento_ciudad.innerHTML = mensaje_ciudad;
     elemento_fecha.innerHTML = mensaje_fecha;
     elemento_tempMax.innerHTML = mensaje_tempMax;
@@ -60,35 +60,23 @@ let loadDayForecastData = () => {
     elemento_pronosticoNoche.innerHTML = mensaje_pronosticoNoche;
     elemento_periodoNoche.innerHTML = mensaje_periodoNoche;
 
-
-
-
-
-
-
-
 }
 
 let loadWeekForecastData = () => {
-	let [manana, lunes, martes, miercoles, jueves, viernes, sabado] =  weather_data[0].forecast_week;
-
-    let{day: diaManana, text: textoManana, date: fechaManana, temperature: temperaturasManana, icon: iconoManana} = manana;
-    let{max: tempMaxManana, min: tempMinManana} = temperaturasManana;
-    let{day: dialunes, text: textoLunes, date: fechaLunes, temperature: temperaturasLunes, icon: iconoLunes} = lunes;
-    let{max: tempMaxLunes, min: tempMinLunes} = temperaturasLunes;
-    let{day: diaMartes, text: textoMartes, date: fechaMartes, temperature: temperaturasMartes, icon: iconoMartes} = martes;
-    let{max: tempMaxMartes, min: tempMinMartes} = temperaturasMartes;
-    let{day: diaMiercoles, text: textoMiercoles, date: fechaMiercoles, temperature: temperaturasMiercoles, icon: iconoMiercoles} = miercoles;
-    let{max: tempMaxMiercoles, min: tempMinMiercoles} = temperaturasMiercoles;
-    let{day: diaJueves, text: textoJueves, date: fechaJueves, temperature: temperaturasJueves, icon: iconoJueves} = jueves;
-    let{max: tempMaxJueves, min: tempMinJueves} = temperaturasJueves;
-    let{day: diaViernes, text: textoViernes, date: fechaViernes, temperature: temperaturasViernes, icon: iconoViernes} = viernes;
-    let{max: tempMaxViernes, min: tempMinViernes} = temperaturasViernes;
-    let{day: diaSabado, text: textoSabado, date: fechaSabado, temperature: temperaturasSabado, icon: iconoSabado} = sabado;
-    let{max: tempMaxSabado, min: tempMinSabado} = temperaturasSabado;
-
-    
-	
+    for (let dias of weather_data[0].forecast_week) {
+        let {text: nombreDia, date: fecha, temperature: temperaturas, icon: icono } = dias;
+        let { max: tempMax, min: tempMin } = temperaturas;
+        let mensaje =  `<div class="d-flex flex-column">
+                            <h6 class="mb-1 text-dark font-weight-bold text-sm">${nombreDia}</h6>
+                            <span class="text-xs">${fecha}</span>
+                        </div>
+                        <div class="d-flex align-items-center ">
+                            <span class="font-weight-bold text-dark mx-2">${tempMax}</span> |  <span class="text-dark mx-2">${tempMin}</span>
+                            <div class="ms-4"><i class="material-icons fs-2 me-1 rainy">${icono}</i></div>
+                        </div>`;
+        let elemento = document.getElementById("info" + nombreDia);
+        elemento.innerHTML = mensaje;
+    }
 }
 
 
