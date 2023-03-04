@@ -102,10 +102,26 @@ let loadWeekForecastData = (cont) => {
     });
 };
 
+let cargarCiudades = () => {
+
+    for (let arregloCiudad of weather_data) {
+        let ciudad = arregloCiudad["city"];
+        let listaCiudades = document.getElementById("dropdownMenuButton");
+        let nuevaCiudad = document.createElement("option");
+        nuevaCiudad.classList.add("dropdown-item");
+        nuevaCiudad.value = ciudad.charAt(0).toLowerCase() + ciudad.slice(1);
+        nuevaCiudad.innerHTML = ciudad;
+        listaCiudades.appendChild(nuevaCiudad);
+
+    };
+
+};
+
 document.addEventListener("DOMContentLoaded", function() {
     loadDayForecastData();
     var contador = 0;
     loadWeekForecastData(contador);
+    cargarCiudades();
 });
 
 
