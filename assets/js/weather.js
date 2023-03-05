@@ -1,9 +1,9 @@
 import { weather_data } from './data.js';
 
 
-let loadDayForecastData = () => {
+let loadDayForecastData = (indice) => {
 
-    let [datosCiudad, ...otrasCiudades] = weather_data;
+    let datosCiudad = weather_data[indice];
 
     let { city: ciudad, date: fecha, maxtemperature: maxtemp, mintemperature: mintemp, cloudiness: nubosidad, wind: viento, rainfall: probPrecipitacion, forecast_today: pronosticoHoy } = datosCiudad;
 
@@ -64,13 +64,13 @@ let loadDayForecastData = () => {
 }
 
 
-let loadWeekForecastData = (cont) => {
+let loadWeekForecastData = (cont, indiceArreglo) => {
     var boton = document.getElementById("loadinfo"),
         listaDias = document.getElementById("semana");
     boton.addEventListener("click", function () {
         if (cont === 0){
 
-            for (let dias of weather_data[0].forecast_week) {
+            for (let dias of weather_data[indiceArreglo].forecast_week) {
                 let { text: nombreDia, date: fecha, temperature: temperaturas, icon: icono } = dias;
                 let { max: tempMax, min: tempMin } = temperaturas;
     
@@ -104,23 +104,31 @@ let loadWeekForecastData = (cont) => {
 
 let cargarCiudades = () => {
 
-    for (let arregloCiudad of weather_data) {
-        let ciudad = arregloCiudad["city"];
+    for (let indice =0; indice < weather_data.length; indice++) {
+        let ciudad = weather_data[indice]["city"];
         let listaCiudades = document.getElementById("dropdownMenuButton");
         let nuevaCiudad = document.createElement("option");
         nuevaCiudad.classList.add("dropdown-item");
+        nuevaCiudad.id = "dropdown-" + ciudad.charAt(0).toLowerCase() + ciudad.slice(1);
         nuevaCiudad.value = ciudad.charAt(0).toLowerCase() + ciudad.slice(1);
         nuevaCiudad.innerHTML = ciudad;
         listaCiudades.appendChild(nuevaCiudad);
+        let elementoMenu = document.getElementById()
 
     };
 
 };
 
+let datosClimaCiudad = () =>{
+
+
+
+};
+
 document.addEventListener("DOMContentLoaded", function() {
-    loadDayForecastData();
+    loadDayForecastData(0);
     var contador = 0;
-    loadWeekForecastData(contador);
+    loadWeekForecastData(contador, 0);
     cargarCiudades();
 });
 
