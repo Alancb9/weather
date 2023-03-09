@@ -12,22 +12,6 @@ let loadDayForecastData = (indice) => {
     let { text: textoTarde, temperature: tempTarde, forecast: msmTarde, icon: iconoTarde } = tarde;
     let { text: textoNoche, temperature: tempNoche, forecast: msmNoche, icon: iconoNoche } = noche;
 
-    let mensaje_ciudad = `<h5 id="city" class="text-golden">${ciudad}</h5>`;
-    let mensaje_fecha = `<h5 id="date" class="text-golden text-sm  opacity-8 mb-0">${fecha}</h5>`;
-    let mensaje_tempMax = `<span id="maxtemperature">${maxtemp}</span>`;
-    let mensaje_tempMin = `<span id="mintemperature" class="opacity-6 mx-2">${mintemp}</span></h2>`;
-    let mensaje_nubosidad = `<h6 id="cloudiness" class="text-golden mb-0">${nubosidad}</h6>`;
-    let mensaje_viento = `<h6 id="wind" class="text-golden mb-0">${viento}</h6>`;
-    let mensaje_probPrecipitacion = `<h6 id="rainfall" class="text-golden mb-0">${probPrecipitacion}</h6>`;
-    let mensaje_iconoTarde = `<i id="late_icon" class="material-icons opacity-10">${iconoTarde}</i>`;
-    let mensaje_tempTarde = `<h3 id="late_temperature" class="text-center mb-0">${tempTarde}</h3>`;
-    let mensaje_pronosticoTarde = `<span id="late_forecast" class="text-md">${msmTarde}</span>`;
-    let mensaje_periodoTarde = `<h4 id="late_text" class="mb-0 text-md">${textoTarde}</h4>`;
-    let mensaje_iconoNoche = `<i id="night_icon" class="material-icons opacity-10">${iconoNoche}</i>`;
-    let mensaje_tempNoche = `<h3 id="night_temperature" class="text-center mb-0">${tempNoche}</h3>`;
-    let mensaje_pronosticoNoche = `<span id="night_forecast" class="text-md">${msmNoche}</span>`;
-    let mensaje_periodoNoche = `<h4 id="night_text" class="mb-0 text-md">${textoNoche}</h4>`;
-
     let elemento_ciudad = document.getElementById("city");
     let elemento_fecha = document.getElementById("date");
     let elemento_tempMax = document.getElementById("maxtemperature");
@@ -44,31 +28,55 @@ let loadDayForecastData = (indice) => {
     let elemento_pronosticoNoche = document.getElementById("night_forecast");
     let elemento_periodoNoche = document.getElementById("night_text");
 
-    elemento_ciudad.innerHTML = mensaje_ciudad;
-    elemento_fecha.innerHTML = mensaje_fecha;
-    elemento_tempMax.innerHTML = mensaje_tempMax;
-    elemento_tempMin.innerHTML = mensaje_tempMin;
-    elemento_nubosidad.innerHTML = mensaje_nubosidad;
-    elemento_viento.innerHTML = mensaje_viento;
-    elemento_probPrecipitacion.innerHTML = mensaje_probPrecipitacion;
-    elemento_iconoTarde.innerHTML = mensaje_iconoTarde;
-    elemento_tempTarde.innerHTML = mensaje_tempTarde;
-    elemento_pronosticoTarde.innerHTML = mensaje_pronosticoTarde;
-    elemento_periodoTarde.innerHTML = mensaje_periodoTarde;
-    elemento_iconoNoche.innerHTML = mensaje_iconoNoche;
-    elemento_tempNoche.innerHTML = mensaje_tempNoche;
-    elemento_pronosticoNoche.innerHTML = mensaje_pronosticoNoche;
-    elemento_periodoNoche.innerHTML = mensaje_periodoNoche;
+    elemento_ciudad.innerHTML = ciudad;
+    elemento_fecha.innerHTML = fecha;
+    elemento_tempMax.innerHTML = maxtemp;
+    elemento_tempMin.innerHTML = mintemp;
+    elemento_nubosidad.innerHTML = nubosidad;
+    elemento_viento.innerHTML = viento;
+    elemento_probPrecipitacion.innerHTML = probPrecipitacion;
+    elemento_iconoTarde.innerHTML = iconoTarde;
+    elemento_tempTarde.innerHTML = tempTarde;
+    elemento_pronosticoTarde.innerHTML = msmTarde;
+    elemento_periodoTarde.innerHTML = textoTarde;
+    elemento_iconoNoche.innerHTML = iconoNoche;
+    elemento_tempNoche.innerHTML = tempNoche;
+    elemento_pronosticoNoche.innerHTML = msmNoche;
+    elemento_periodoNoche.innerHTML = textoNoche;
 
     
 }
 
+let cargarDatosSemana = (indiceArreglo) => {
 
-let loadWeekForecastData = (cont, indiceArreglo) => {
-    var boton = document.getElementById("loadinfo"),
-        listaDias = document.getElementById("semana");
-    boton.addEventListener("click", function () {
-        if (cont === 0){
+    for (let dias of weather_data[indiceArreglo].forecast_week){
+
+        let { text: nombreDia, date: fecha, temperature: temperaturas, icon: icono } = dias;
+        let { max: tempMax, min: tempMin } = temperaturas;
+        let mensajeDiaCiudad = `<div class="d-flex flex-column">
+                                    <h6 class="mb-1 text-dark font-weight-bold text-sm">${nombreDia}</h6>
+                                    <span class="text-xs">${fecha}</span>
+                                </div>
+                                <div class="d-flex align-items-center ">
+                                    <span class="font-weight-bold text-dark mx-2">${tempMax}</span> |  <span class="text-dark mx-2">${tempMin}</span>
+                                    <div class="ms-4"><i class="material-icons fs-2 me-1 rainy">${icono}</i></div>
+                                </div>`;
+
+        let elementoDia = document.getElementById("informacion" + nombreDia);
+
+        elementoDia.innerHTML = mensajeDiaCiudad;
+
+    };
+    
+
+};
+
+let loadWeekForecastData = (contador, indiceArreglo) => {
+    var boton = document.getElementById("loadinfo");
+    var listaDias = document.getElementById("semana");
+    boton.addEventListener("click", () => {
+
+        if (contador === 0){
 
             for (let dias of weather_data[indiceArreglo].forecast_week) {
                 let { text: nombreDia, date: fecha, temperature: temperaturas, icon: icono } = dias;
@@ -76,6 +84,7 @@ let loadWeekForecastData = (cont, indiceArreglo) => {
     
                 var nuevoDia = document.createElement("li");
                 nuevoDia.classList.add("list-group-item", "border-0", "d-flex", "justify-content-between", "ps-0", "mb-2", "border-radius-lg");
+                nuevoDia.id = "informacion" + nombreDia;
                 nuevoDia.innerHTML = `<div class="d-flex flex-column">
                                         <h6 class="mb-1 text-dark font-weight-bold text-sm">${nombreDia}</h6>
                                         <span class="text-xs">${fecha}</span>
@@ -87,9 +96,10 @@ let loadWeekForecastData = (cont, indiceArreglo) => {
     
                 listaDias.appendChild(nuevoDia);          
             };
-
-            cont = 1;
-
+    
+            contador = 1;
+    
+    
         };
 
         var estado = listaDias.style.display;
@@ -106,23 +116,29 @@ let cargarCiudades = () => {
 
     for (let indice =0; indice < weather_data.length; indice++) {
         let ciudad = weather_data[indice]["city"];
+
         let listaCiudades = document.getElementById("dropdownMenuButton");
         let nuevaCiudad = document.createElement("option");
-        nuevaCiudad.classList.add("dropdown-item");
-        nuevaCiudad.id = "dropdown-" + ciudad.charAt(0).toLowerCase() + ciudad.slice(1);
-        nuevaCiudad.value = ciudad.charAt(0).toLowerCase() + ciudad.slice(1);
+
+        nuevaCiudad.classList.add("dropdown-item");      
+        nuevaCiudad.id = "dropdown-" + ciudad;
         nuevaCiudad.innerHTML = ciudad;
         listaCiudades.appendChild(nuevaCiudad);
-        let elementoMenu = document.getElementById()
+
 
     };
 
 };
 
-let datosClimaCiudad = () =>{
-
-
-
+function datosClimaCiudad() {
+    let opcionMenu = document.getElementById("dropdownMenuButton");
+    opcionMenu.addEventListener("change", () => {
+        loadDayForecastData(opcionMenu.selectedIndex - 1);
+        cargarDatosSemana(opcionMenu.selectedIndex - 1);
+        
+        
+    });
+    
 };
 
 document.addEventListener("DOMContentLoaded", function() {
@@ -130,8 +146,6 @@ document.addEventListener("DOMContentLoaded", function() {
     var contador = 0;
     loadWeekForecastData(contador, 0);
     cargarCiudades();
+    datosClimaCiudad();
 });
 
-
-// loadDayForecastData();
-// loadWeekForecastData();
